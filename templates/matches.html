@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center py-10">
     <h2 class="text-3xl font-bold mb-6 text-gray-800">Matched Users</h2>
-    
+    <a href="/contact/{{ user.id }}">
     <div class="w-full max-w-md">
         {% for user in users %}
         <div class="bg-white shadow-md rounded-lg p-4 mb-4 hover:bg-gray-50 transition">
@@ -16,6 +16,7 @@
             <p class="text-sm text-gray-500">Skills Offered: {{ user.skills_offered }}</p>
             <p class="text-sm text-gray-500">Skills Requested: {{ user.skills_requested }}</p>
         </div>
+    </a>
         {% else %}
         <p class="text-gray-600 text-center">No matches found yet.</p>
         {% endfor %}

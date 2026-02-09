@@ -12,8 +12,8 @@
         <form method="POST" class="space-y-4">
             <input name="name" value="{{ user.name }}" placeholder="Name" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             <input name="email" value="{{ user.email }}" placeholder="Email" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" readonly>
-            <input name="skills_offered" value='{{ user.skills_offered.split(",") }}' placeholder="Skills Offered" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <input name="skills_requested" value='{{ user.skills_requested.split(",") }}' placeholder="Skills Requested" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <input name="skills_offered" value='{{ user.skills_offered }}' placeholder="Skills Offered" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <input name="skills_requested" value='{{ user.skills_requested }}' placeholder="Skills Requested" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
             <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition">Update Profile</button>
         </form>
     </div>

@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session
-from models import db, User, Request, Feedback
+from models import ModuleRequest, db, User, Feedback
 import os
 
 print("DB LOCATION: ", os.getcwd())
@@ -107,13 +107,65 @@ def profile():
 
     if request.method == "POST":
         user.name = request.form["name"]
-        user.skills_offered = request.form["skills_offered"].lower()
-        user.skills_requested = request.form["skills_requested"]
+        offered = request.form["skills_offered"]
+        requested = request.form["skills_requested"]
+
+        user.skills_offered = ", ".join(
+            [s.strip().lower() for s in offered.split(",") if s.strip()]
+        )
+
+        user.skills_requested = ", ".join(
+            [a.strip().lower() for a in requested.split(",") if a.strip()]
+        )
 
         db.session.commit()
-        return "Profile updated!"
+        return redirect(url_for("profile"))
 
     return render_template("profile.html", user=user)
+
+@app.route("/request", methods=["GET","POST"])
+def request_module():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    if request.method == "POST":
+        module = ModuleRequest(
+            title=request.form["title"],
+            description=request.form["description"],
+            requested_by=session["user_id"]
+        )
+        db.session.add(module)
+        db.session.commit()
+        return redirect(url_for("all_modules"))
+    
+    return render_template("request.html")
+
+@app.route("/modules")
+def all_modules():
+    modules = ModuleRequest.query.all()
+    return render_template("modules.html", modules=modules)
+
+@app.route("/add_module/<int:module_id>")
+def add_module(module_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    module = ModuleRequest.query.get(module_id)
+    user = User.query.get(session["user_id"])
+
+    if module.title.lower() not in user.skills_offered.lower():
+        user.skills_offered += f", {module.title}"
+
+    db.session.commit()
+    return redirect(url_for("profile"))
+
+@app.route("/contact/<int:user_id>", methods=["GET", "POST"])
+def contact(user_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    target_user = User.query.get(user_id)
+    current_user = User.query.get(session["user_id"])
 
 
 if __name__ == "__main__":

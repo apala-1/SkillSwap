@@ -10,15 +10,14 @@ class User(db.Model):
     skills_offered = db.Column(db.String(300))
     skills_requested = db.Column(db.String(300))
 
-class Request(db.Model):
+class ModuleRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer)
-    receiver_id = db.Column(db.Integer)
-    status = db.Column(db.String(50))
     title = db.Column(db.String(100))
+    description = db.Column(db.String(300))
+    requested_by = db.Column(db.Integer)
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    rating = db.Column(db.Integer)
-    comments = db.Column(db.String(300))
+    sender_id = db.Column(db.Integer)
+    receiver_id = db.Column(db.Integer)
+    mmessage = db.Column(db.String(300))
