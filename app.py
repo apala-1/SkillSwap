@@ -47,7 +47,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        return "Registered successfully"
+        return redirect(url_for("login"))
     
     return render_template("register.html")
 
@@ -86,14 +86,21 @@ def matches():
 
     current_user = User.query.get(session["user_id"])
 
+    requested_skills = [s.strip().lower() for s in current_user.skills_requested.split(",") if s.strip()]
+    offered_skills = [s.strip().lower() for s in current_user.skills_offered.split(",") if s.strip()]
+
     matched_users = []
     users = User.query.all()
 
     for u in users:
         if u.id == current_user.id:
             continue
-        if current_user.skills_requested in u.skills_offered and \
-           u.skills_requested in current_user.skills_offered:
+
+        u_offered = [s.strip().lower() for s in u.skills_offered.split(",") if s.strip()]
+        u_requested = [s.strip().lower() for s in u.skills_requested.split(",") if s.strip()]
+
+        if any(skill in u_offered for skill in requested_skills) and \
+           any(skill in offered_skills for skill in u_requested):
             matched_users.append(u)
 
     return render_template("matches.html", users=matched_users)
@@ -152,6 +159,9 @@ def add_module(module_id):
     
     module = ModuleRequest.query.get(module_id)
     user = User.query.get(session["user_id"])
+
+    if module.requested_by == user.id:
+        return "You cannot add your own requested module to your skills.", 403
 
     if module.title.lower() not in user.skills_offered.lower():
         user.skills_offered += f", {module.title}"

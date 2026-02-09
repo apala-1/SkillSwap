@@ -20,16 +20,22 @@
 
     <div class="space-y-4">
         {% for module in modules %}
-        <div class="bg-white p-5 rounded-xl shadow-sm flex justify-between items-center">
+<div class="bg-white p-5 rounded-xl shadow-sm flex justify-between items-center">
+    <div>
+        <h2 class="text-lg font-semibold text-gray-800">{{ module.title }}</h2>
+        <p class="text-gray-600 text-sm">{{ module.description }}</p>
+    </div>
 
-            <div>
-                <h2 class="text-lg font-semibold text-gray-800">{{ module.title }}</h2>
-                <p class="text-gray-600 text-sm">{{ module.description }}</p>
-            </div>
+    {% if module.requested_by != session['user_id'] %}
+    <a href="/add_module/{{ module.id }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+        Add to Skills
+    </a>
+    {% else %}
+    <span class="text-gray-400 italic text-sm">Requested by you</span>
+    {% endif %}
+</div>
+{% endfor %}
 
-            <a href="/add_module/{{ module.id }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">Add to Skills</a>
-        </div>
-        {% endfor %}
     </div>
 
 </div>

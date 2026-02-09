@@ -11,23 +11,43 @@
 <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
     <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Register</h2>
 
-    <form method="POST" class="space-y-4" onsubmit="return validateRegister()">
-        <input name="name" id="name" placeholder="Name" required
-               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-        
-        <input name="email" id="email" type="email" placeholder="Email" required
-               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-        
-        <input name="password" id="password" type="password" placeholder="Password" required minlength="6"
-               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-        
-        <input name="skills_offered" id="skills_offered" placeholder="Skills Offered" required
-               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-        
-        <input name="skills_requested" id="skills_requested" placeholder="Skills Requested" required
-               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-        
-        <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition">
+    <form id="registerForm" action="/register" method="POST" class="space-y-4" onsubmit="return validateRegister()">
+        <div>
+            <input id="name" name="name" placeholder="Name"
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <p id="nameError" class="text-red-500 text-sm mt-1 hidden">Name is required.</p>
+        </div>
+
+        <div>
+            <input id="email" name="email" type="email" placeholder="Email"
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Valid email is required.</p>
+        </div>
+
+        <div class="relative">
+            <input id="password" name="password" type="password" placeholder="Password"
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 pr-12">
+            <button type="button" onclick="togglePassword('password', this)"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                Show
+            </button>
+            <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Password must be at least 6 characters.</p>
+        </div>
+
+        <div>
+            <input id="skills_offered" name="skills_offered" placeholder="Skills Offered"
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <p id="offeredError" class="text-red-500 text-sm mt-1 hidden">Enter at least one skill offered.</p>
+        </div>
+
+        <div>
+            <input id="skills_requested" name="skills_requested" placeholder="Skills Requested"
+                   class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <p id="requestedError" class="text-red-500 text-sm mt-1 hidden">Enter at least one skill requested.</p>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition">
             Register
         </button>
     </form>
@@ -39,24 +59,62 @@
 </div>
 
 <script>
+function togglePassword(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    if (input.type === "password") {
+        input.type = "text";
+        btn.innerText = "Hide";
+    } else {
+        input.type = "password";
+        btn.innerText = "Show";
+    }
+}
+
 function validateRegister() {
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const offered = document.getElementById("skills_offered").value.trim();
-    const requested = document.getElementById("skills_requested").value.trim();
+    let valid = true;
 
-    if (!name || !email || !password || !offered || !requested) {
-        alert("All fields are required.");
-        return false;
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const skillsOffered = document.getElementById("skills_offered");
+    const skillsRequested = document.getElementById("skills_requested");
+
+    ["nameError","emailError","passwordError","offeredError","requestedError"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+        document.getElementById(id.replace("Error","")).classList.remove("border-red-500");
+    });
+
+    if (!name.value.trim()) {
+        document.getElementById("nameError").classList.remove("hidden");
+        name.classList.add("border-red-500");
+        valid = false;
     }
 
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-        return false;
+    if (!email.value.trim() || !/\S+@\S+\.\S+/.test(email.value)) {
+        document.getElementById("emailError").classList.remove("hidden");
+        email.classList.add("border-red-500");
+        valid = false;
     }
 
-    return true;
+    if (!password.value || password.value.length < 6) {
+        document.getElementById("passwordError").classList.remove("hidden");
+        password.classList.add("border-red-500");
+        valid = false;
+    }
+
+    if (!skillsOffered.value.trim()) {
+        document.getElementById("offeredError").classList.remove("hidden");
+        skillsOffered.classList.add("border-red-500");
+        valid = false;
+    }
+
+    if (!skillsRequested.value.trim()) {
+        document.getElementById("requestedError").classList.remove("hidden");
+        skillsRequested.classList.add("border-red-500");
+        valid = false;
+    }
+
+    return valid;
 }
 </script>
 
