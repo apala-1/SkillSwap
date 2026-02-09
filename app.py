@@ -92,7 +92,6 @@ def matches():
     for u in users:
         if u.id == current_user.id:
             continue
-        # basic match logic: user wants what you offer AND offers what you want
         if current_user.skills_requested in u.skills_offered and \
            u.skills_requested in current_user.skills_offered:
             matched_users.append(u)
@@ -108,7 +107,7 @@ def profile():
 
     if request.method == "POST":
         user.name = request.form["name"]
-        user.skills_offered = request.form["skills_offered"]
+        user.skills_offered = request.form["skills_offered"].lower()
         user.skills_requested = request.form["skills_requested"]
 
         db.session.commit()

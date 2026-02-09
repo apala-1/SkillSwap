@@ -15,6 +15,7 @@ class Request(db.Model):
     sender_id = db.Column(db.Integer)
     receiver_id = db.Column(db.Integer)
     status = db.Column(db.String(50))
+    title = db.Column(db.String(100))
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
