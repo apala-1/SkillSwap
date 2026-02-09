@@ -72,12 +72,7 @@ def dashboard():
         return redirect(url_for("login"))
 
     user = User.query.get(session["user_id"])
-    return f"""
-    <h2>Hello, {user.name}!</h2>
-    <p><a href='/matches'>View Matches</a></p>
-    <p><a href='/profile'>My Profile</a></p>
-    <p><a href='/logout'>Logout</a></p>
-    """
+    return render_template("dashboard.html", user=user)
 
 @app.route("/logout")
 def logout():
