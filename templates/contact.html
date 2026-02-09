@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-8">
+
+<div class="max-w-5xl mx-auto grid grid-cols-3 gap-6">
+
+    <div class="bg-white p-6 rounded-xl shadow-md col-span-1">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">
+            Contact {{ user.name }}
+        </h2>
+
+        <p class="text-sm text-gray-600 mb-2">
+            Skills Offered: {{ user.skills_offered }}
+        </p>
+
+        <p class="text-sm text-gray-600">
+            Skills Requested: {{ user.skills_requested }}
+        </p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-md col-span-2">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">
+    Collaboration Messages
+</h2>
+
+<div class="mb-6 space-y-3 max-h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50">
+
+    {% for msg in messages %}
+        {% if msg.sender_id == current_user_id %}
+            <!-- Your message -->
+            <div class="text-right">
+                <p class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg">
+                    {{ msg.message }}
+                </p>
+            </div>
+        {% else %}
+            <!-- Their message -->
+            <div class="text-left">
+                <p class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                    {{ msg.message }}
+                </p>
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="text-sm text-gray-500 text-center">
+            No messages yet. Someone has to be brave first.
+        </p>
+    {% endfor %}
+
+</div>
+
+
+        <form method="POST" class="space-y-4">
+
+            <textarea name="message"
+                placeholder="Write feedback or contact message..."
+                class="w-full h-40 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"></textarea>
+
+            <button type="submit"
+                class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition">
+                Send
+            </button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

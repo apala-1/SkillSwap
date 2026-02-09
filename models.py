@@ -18,6 +18,6 @@ class ModuleRequest(db.Model):
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer)
-    receiver_id = db.Column(db.Integer)
-    mmessage = db.Column(db.String(300))
+    sender_id = db.Column(db.Integer, nullable=False)
+    receiver_id = db.Column(db.Integer, nullable=False)
+    message = db.Column(db.String(300), nullable=False)

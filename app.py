@@ -11,8 +11,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "mysupersecretveryverydifficultkey"
 db.init_app(app)
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def home():
@@ -163,9 +163,35 @@ def add_module(module_id):
 def contact(user_id):
     if "user_id" not in session:
         return redirect(url_for("login"))
-    
+
+    current_user_id = session["user_id"]
     target_user = User.query.get(user_id)
-    current_user = User.query.get(session["user_id"])
+
+    if not target_user:
+        return "User not found", 404
+
+    if request.method == "POST":
+        new_feedback = Feedback(
+            sender_id=current_user_id,
+            receiver_id=target_user.id,
+            message=request.form["message"]
+        )
+        db.session.add(new_feedback)
+        db.session.commit()
+        return redirect(url_for("contact", user_id=user_id))
+
+    messages = Feedback.query.filter(
+        ((Feedback.sender_id == current_user_id) & (Feedback.receiver_id == user_id)) |
+        ((Feedback.sender_id == user_id) & (Feedback.receiver_id == current_user_id))
+    ).order_by(Feedback.id.asc()).all()
+
+    return render_template(
+        "contact.html",
+        user=target_user,
+        messages=messages,
+        current_user_id=current_user_id
+    )
+
 
 
 if __name__ == "__main__":
