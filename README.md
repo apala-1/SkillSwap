@@ -13,23 +13,7 @@ SkillSwap is a Flask-based web application that allows users to exchange skills.
 
 ## Folder Structure
 
-SKILLSWAP/
-├── app.py # Main Flask application
-├── models.py # Database models
-├── instance/
-│ └── database.db # SQLite database
-├── static/
-│ └── style.css # Optional CSS file
-├── templates/ # HTML templates
-│ ├── contact.html
-│ ├── dashboard.html
-│ ├── login.html
-│ ├── matches.html
-│ ├── modules.html
-│ ├── profile.html
-│ ├── register.html
-│ └── request.html
-└── venv/ # Python virtual environment
+<pre> ```text SKILLSWAP/ ├── app.py # Main Flask application ├── models.py # Database models ├── instance/ │ └── database.db # SQLite database ├── static/ │ └── style.css # Optional CSS file ├── templates/ # HTML templates │ ├── contact.html │ ├── dashboard.html │ ├── login.html │ ├── matches.html │ ├── modules.html │ ├── profile.html │ ├── register.html │ └── request.html └── venv/ # Python virtual environment ``` </pre>
 
 
 ## Installation
