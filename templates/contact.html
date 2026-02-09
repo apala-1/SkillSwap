@@ -12,6 +12,8 @@
 <div class="max-w-5xl mx-auto grid grid-cols-3 gap-6">
 
     <div class="bg-white p-6 rounded-xl shadow-md col-span-1">
+        <a href="/matches" class="inline-block mb-4 text-blue-500 hover:underline">&larr; Back to Matches</a>
+
         <h2 class="text-xl font-bold mb-4 text-gray-800">
             Contact {{ user.name }}
         </h2>
@@ -27,35 +29,32 @@
 
     <div class="bg-white p-6 rounded-xl shadow-md col-span-2">
         <h2 class="text-xl font-bold mb-4 text-gray-800">
-    Collaboration Messages
-</h2>
+            Collaboration Messages
+        </h2>
 
-<div class="mb-6 space-y-3 max-h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50">
+        <div class="mb-6 space-y-3 max-h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50">
 
-    {% for msg in messages %}
-        {% if msg.sender_id == current_user_id %}
-            <!-- Your message -->
-            <div class="text-right">
-                <p class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg">
-                    {{ msg.message }}
+            {% for msg in messages %}
+                {% if msg.sender_id == current_user_id %}
+                    <div class="text-right">
+                        <p class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg">
+                            {{ msg.message }}
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="text-left">
+                        <p class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
+                            {{ msg.message }}
+                        </p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="text-sm text-gray-500 text-center">
+                    No messages yet. Someone has to be brave first.
                 </p>
-            </div>
-        {% else %}
-            <!-- Their message -->
-            <div class="text-left">
-                <p class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded-lg">
-                    {{ msg.message }}
-                </p>
-            </div>
-        {% endif %}
-    {% else %}
-        <p class="text-sm text-gray-500 text-center">
-            No messages yet. Someone has to be brave first.
-        </p>
-    {% endfor %}
+            {% endfor %}
 
-</div>
-
+        </div>
 
         <form method="POST" class="space-y-4">
 
